@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+	<include resource="org/springframework/boot/logging/logback/base.xml" />
+
+<!-- ======================================================= -->
+<!-- Example 1 -->
+<!-- ======================================================= -->
+<!-- Logger name						Assigned level	Effective level -->
+<!-- root								DEBUG			DEBUG -->
+<!-- zikzakjack							none			DEBUG -->
+<!-- zikzakjack.package1				none			DEBUG -->
+<!-- zikzakjack.package1.subpackage1	none			DEBUG -->
+
+<!-- 	<root level="DEBUG"/> -->
+
+<!-- In example 1 above, only the root logger is assigned a level. This level value, DEBUG, is inherited by the other loggers -->
+
+
+
+<!-- ======================================================= -->
+<!-- Example 2 -->
+<!-- ======================================================= -->
+<!-- Logger name						Assigned level	Effective level -->
+<!-- root								ERROR			ERROR -->
+<!-- zikzakjack							INFO			INFO -->
+<!-- zikzakjack.package1				DEBUG			DEBUG -->
+<!-- zikzakjack.package1.subpackage1	WARN			WARN -->
+
+<!-- 	<root level="ERROR"/> -->
+<!-- 	<logger name="zikzakjack" level="INFO" /> -->
+<!-- 	<logger name="zikzakjack.package1" level="DEBUG" /> -->
+<!-- 	<logger name="zikzakjack.package1.subpackage1" level="WARN" /> -->
+
+<!-- In example 2 above, all loggers have an assigned level value. Level inheritance does not come into play. -->
+
+
+
+<!-- ======================================================= -->
+<!-- Example 3 -->
+<!-- ======================================================= -->
+<!-- Logger name						Assigned level	Effective level -->
+<!-- root								DEBUG			DEBUG -->
+<!-- zikzakjack							INFO			INFO -->
+<!-- zikzakjack.package1				none			INFO -->
+<!-- zikzakjack.package1.subpackage1	ERROR			ERROR -->
+
+<!-- 	<root level="DEBUG"/> -->
+<!-- 	<logger name="zikzakjack" level="INFO" /> -->
+<!-- 	<logger name="zikzakjack.package1.subpackage1" level="ERROR" /> -->
+
+<!-- In example 3 above, the loggers root, X and X.Y.Z are assigned the levels DEBUG, INFO and ERROR respectively. Logger X.Y inherits its level value from its parent X. -->
+
+
+
+<!-- ======================================================= -->
+<!-- Example 4 -->
+<!-- ======================================================= -->
+<!-- Logger name						Assigned level	Effective level -->
+<!-- root								DEBUG			DEBUG -->
+<!-- zikzakjack							INFO			INFO -->
+<!-- zikzakjack.package1				none			INFO -->
+<!-- zikzakjack.package1.subpackage1	none			INFO -->
+
+<!-- 	<root level="DEBUG"/> -->
+<!-- 	<logger name="zikzakjack" level="INFO" /> -->
+
+<!-- In example 4 above, the loggers root and X and are assigned the levels DEBUG and INFO respectively. The loggers X.Y and X.Y.Z inherit their level value from their nearest parent X, which has an assigned level. -->
+
+
+
+<!-- ======================================================= -->
+<!-- Example 5 -->
+<!-- ======================================================= -->
+<!-- Logger name		Assigned level	Effective level 	FILTER				Appenders	-->
+<!-- root				INFO			INFO 				NO					CONSOLE & FILE	-->
+<!-- zikzakjack			INFO			INFO 				NO					CONSOLE & FILE	-->
+<!-- zikzakjack			INFO			INFO 				YES>ONLY ERROR		CONSOLE & FILE	-->
+
+	<root level="INFO">
+		<appender-ref ref="CONSOLE" />
+		<appender-ref ref="FILE" />
+	</root>
+
+	<appender name="FILE_ERROR_LOGS" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<filter class="ch.qos.logback.classic.filter.LevelFilter">
+			<level>ERROR</level>
+			<onMatch>ACCEPT</onMatch>
+			<onMismatch>DENY</onMismatch>
+		</filter>
+		<encoder>
+			<pattern>${FILE_LOG_PATTERN}</pattern>
+		</encoder>
+		<file>logs/spring-boot-logback-demo-errors.log</file>
+		<rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
+			<fileNamePattern>logs/spring-boot-logback-demo-errors.log.%i</fileNamePattern>
+		</rollingPolicy>
+		<triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+			<MaxFileSize>10MB</MaxFileSize>
+		</triggeringPolicy>
+	</appender>
+	<logger name="zikzakjack" level="INFO" additivity="true">
+		<appender-ref ref="FILE_ERROR_LOGS" />
+	</logger>
+
+</configuration>
