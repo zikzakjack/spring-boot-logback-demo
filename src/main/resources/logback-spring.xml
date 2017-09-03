@@ -76,6 +76,8 @@
 <!-- zikzakjack			INFO			INFO 				NO					CONSOLE & FILE	-->
 <!-- zikzakjack			INFO			INFO 				YES>ONLY ERROR		CONSOLE & FILE	-->
 
+	<property resource="application.properties" />
+
 	<root level="INFO">
 		<appender-ref ref="CONSOLE" />
 		<appender-ref ref="FILE" />
@@ -90,9 +92,9 @@
 		<encoder>
 			<pattern>${FILE_LOG_PATTERN}</pattern>
 		</encoder>
-		<file>logs/spring-boot-logback-demo-errors.log</file>
+		<file>${file.error.logs}</file>
 		<rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
-			<fileNamePattern>logs/spring-boot-logback-demo-errors.log.%i</fileNamePattern>
+			<fileNamePattern>${file.error.logs}.%i</fileNamePattern>
 		</rollingPolicy>
 		<triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
 			<MaxFileSize>10MB</MaxFileSize>
