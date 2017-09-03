@@ -106,11 +106,17 @@
 
 
 
+* Encoders are responsible for transforming an event into a byte array as well as writing out that byte array into an OutputStream.
+
+* Encoders have total control over the format of the bytes written out, but also control when (and if) those bytes get written out.
+
+
+
 ### Layouts
 
 
 
-* Layout is responsible for formatting the logging request according to the user's wishes
+* Layouts are logback components responsible for transforming and formatting an incoming event into a String.
 
 
 
@@ -118,7 +124,17 @@
 
 
 
+* Logback filters are based on ternary logic allowing them to be assembled or chained together to compose an arbitrarily complex filtering policy.
+
+
+
 ### Mapped Daignostic Contexts
+
+
+
+* In a typical multithreaded implementation of distributed system, different threads will handle different clients.
+
+* Log request servicing a given client is uniquely stamped and the user puts contextual information into the MDC, the abbreviation of Mapped Diagnostic Context.
 
 
 
